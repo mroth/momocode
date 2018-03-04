@@ -61,24 +61,40 @@ contract EmojiHash {
         Better, faster, stronger... using inline assembly.
     */
     function _extractBytesForPosition(uint8 n) pure internal returns (bytes4) {
-        bytes memory data = PEMOJIZ; // <- inline assembly can't access constants (sigh)
+        bytes memory table = PEMOJIZ; // <- inline assembly can't access constants (sigh)
         uint16 start = uint16(n)*4;
         bytes4 pos;
         assembly {
-            pos := mload(add(add(data, 0x20), start))
+            pos := mload(add(add(table, 0x20), start))
         }
         return pos;
     }
-    // TODO: more efficient version of above which does extractBytesForPositions(...)
-    // In theory this could help avoiding extra memory loads?
 
-    function encode(bytes20 _bytes) pure public returns (bytes4[20]) {
+    // More efficient version of above which extracts bytes for all positions without multiple
+    // function invocations. In theory this could help avoiding extra memory loads of PEMOJIZ table?
+    function _extractBytesForAllPositions(bytes20 _data) pure internal returns (bytes4[20]) {
+        bytes memory table = PEMOJIZ;
         bytes4[20] memory results;
-        for (uint8 i = 0; i < _bytes.length; i++) {
-            bytes4 positionBytes = _extractBytesForPosition(uint8(_bytes[i]));
-            results[i] = positionBytes;
+
+        bytes4 res; // allocated placeholder
+        for (uint8 i = 0; i < _data.length; i++) {
+            uint16 startPos = uint16(_data[i])*4;
+            assembly {
+                res := mload(add(add(table, 0x20), startPos))
+            }
+            results[i] = res;
         }
         return results;
+    }
+
+    function encode(bytes20 _data) pure public returns (bytes4[20]) {
+        // bytes4[20] memory results;
+        // for (uint8 i = 0; i < _data.length; i++) {
+        //     bytes4 positionBytes = _extractBytesForPosition(uint8(_data[i]));
+        //     results[i] = positionBytes;
+        // }
+        // return results;
+        return _extractBytesForAllPositions(_data);
     }
 
     function encode(address _address) pure public returns (bytes4[20]) {
