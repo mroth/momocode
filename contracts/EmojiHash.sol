@@ -24,18 +24,7 @@ contract EmojiHash {
         return (PEMOJIZ[start], PEMOJIZ[start+1], PEMOJIZ[start+2], PEMOJIZ[start+3]);
     }
 
-    // @dev returns an array of the 20 individual bytes of an address
-    // WONTFIX: maybe consider opposite unwind direction and see if it saves any gas??
-    // NOTE: This was totally unnecessary, turns out we can just typecast an address to a bytes20!
-    // function _getBytes(address _address) pure internal returns (uint8[20] results) {
-    //     uint target = uint(_address);
-    //     for (uint8 i = 0; i <= 19; i++) {
-    //         results[i] = uint8((target >> 8*(19-i)) & 0xff);
-    //     }
-    // }
-
     function _encodeToString(bytes20 _bytes) pure internal returns (string) {
-        // uint8[20] memory target = _getBytes(_address);
         bytes memory output = new bytes(80);
         bytes1 a; bytes1 b; bytes1 c; bytes1 d;
         for (uint8 i = 1; i <= 20; i++) {
