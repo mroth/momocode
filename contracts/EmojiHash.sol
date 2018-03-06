@@ -105,9 +105,7 @@ contract EmojiHash {
         bytes memory tempBytes = new bytes(80);
         assembly {
             let mc := add(tempBytes, 0x20)
-            for {
-                let i := 0
-            } lt(i, 20) {
+            for { let i := 0 } lt(i, 20) {
                 i  := add(i,  1)
                 mc := add(mc, 4)
             } {
@@ -134,9 +132,6 @@ contract EmojiHash {
         return encodeToString(bytes20(_address));
     }
 
-    // function tmpRoundtrip(address _address) public pure returns (string) {
-    //     return string(encodeToBytes(_address));
-    // }
 
     // @dev converts the internal constant data into something more usable
     // mapping (bytes4 => uint8) private emojiToPositionMapping;
