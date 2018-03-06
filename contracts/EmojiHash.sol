@@ -133,27 +133,5 @@ contract EmojiHash {
     }
 
 
-    // @dev converts the internal constant data into something more usable
-    // mapping (bytes4 => uint8) private emojiToPositionMapping;
-    // function _generateEmojiTable() private {
-    //     for (uint i = 0; i <= 255; i++) {
-    //         emojiToValueMapping[_extractBytesForPosition(i)] = i;
-    //     }
-    // }
-
-    // function decode(string _encodedAddress) public view returns (address) {
-    //     // initial sanity check that we are getting a string of correct size
-    //     require(_encodedAddress.length == 20);
-
-    //     // first we need to build the hash table to do the decoding, we do it
-    //     // here on execution since solidity does not allow us to have a constant
-    //     // array or mapping, and we want to avoid the gas costs to put it in
-    //     // storage.
-    //     mapping (bytes1 => uint8) decodeTable; // UGH we
-    //     for (uint i = 0; i < PEMOJIZ.length; i++) {
-    //         decodeTable[PEMOJIZ[i]] = i; // NOPE WONT WORK BECAUSE 4 BYTES GRR
-    //     }
-    // }
-
 
 }
