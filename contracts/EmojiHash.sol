@@ -145,6 +145,22 @@ contract EmojiHash {
         return encodeToString(bytes20(_address));
     }
 
+    /// @notice Hashes an arbitrary amount of bytes, then encodes to a fingerprint array.
+    /// @param _bytes The data to be hashed and then encoded.
+    /// @return An array of 20 `bytes4` values each representing an emoji glyph.
+    /// @dev this is the equivalent of doing ripemd160(_bytes) and passing to encode(),
+    /// and is just provided for convenience.
+    function hashEncode(bytes _bytes) pure external returns (bytes4[20]) {
+        return encode(ripemd160(_bytes));
+    }
 
+    /// @notice Same as `hashEncode()`, but returns a string suitable for display.
+    /// @param _bytes The data to be hashed and then encoded.
+    /// @return A `string` representing the entire emoji fingerprint, with 20 glyphs.
+    /// @dev this is the equivalent of doing encodeToString(ripemd160(_bytes)),
+    /// and is just provided for convenience.
+    function hashEncodeToString(bytes _bytes) pure external returns (string) {
+        return encodeToString(ripemd160(_bytes));
+    }
 
 }
