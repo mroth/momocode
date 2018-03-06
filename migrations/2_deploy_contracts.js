@@ -1,5 +1,5 @@
-const EmojiHash = artifacts.require("./EmojiHash.sol")
+const MomoCoder = artifacts.require("./MomoCoder.sol")
 
 module.exports = function(deployer) {
-	deployer.deploy(EmojiHash);
+	deployer.deploy(MomoCoder);
 };
