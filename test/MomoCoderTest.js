@@ -51,6 +51,15 @@ contract("MomoCoder", async (accounts) => {
         assert.equal(prehashed, actual);
     });
 
+    it("should let me do this dirty hack to enumerate gas costs", async () => {
+        let i = await MomoCoder.deployed();
+        console.log("encodeToStringDeprecated: ", await i.encodeToStringDeprecated.estimateGas(ex1_address));
+        console.log("encodeToString: ", await i.encodeToString.estimateGas(ex1_address));
+        console.log("encode: ", await i.encode.estimateGas(ex1_address));
+        console.log("hashEncode: ", await i.hashEncode.estimateGas(ex1_address));
+        console.log("hashEncodeToString: ", await i.hashEncodeToString.estimateGas(ex1_address));
+    });
+
 });
 
 
@@ -67,6 +76,12 @@ contract("MomoDecoder", async (accounts) => {
         let actual = await instance.decode.call(ex1_chunks);
         assert.equal(web3.toChecksumAddress(actual), ex1_address);
     })
+
+    it("should let me do this dirty hack to enumerate gas costs", async () => {
+        let i = await MomoDecoder.deployed();
+        console.log("decodeFromString: ", await i.decodeFromString.estimateGas(ex1_encoded));
+        console.log("decode: ", await i.decode.estimateGas(ex1_chunks));
+    });
 
     // it("decodeFromString() should error when attempting to decode something not of valid length", async () => {
     //     let instance = await MomoDecoder.deployed();
