@@ -154,6 +154,15 @@ contract MomoCoder {
         return encode(ripemd160(_bytes));
     }
 
+    /// @notice Hashes an address, then encodes to a fingerprint array.
+    /// @param _address The address to be hashed and then encoded.
+    /// @return An array of 20 `bytes4` values each representing an emoji glyph.
+    /// @dev this is the equivalent of doing ripemd160(_address) and passing to
+    /// encode(),and is just provided for convenience.
+    function hashEncodeAddress(address _address) pure external returns (bytes4[20]) {
+        return encode(ripemd160(_address));
+    }
+
     /// @notice Same as `hashEncode()`, but returns a string suitable for display.
     /// @param _bytes The data to be hashed and then encoded.
     /// @return A `string` representing the entire emoji fingerprint, with 20 glyphs.
@@ -161,6 +170,15 @@ contract MomoCoder {
     /// and is just provided for convenience.
     function hashEncodeToString(bytes _bytes) pure external returns (string) {
         return encodeToString(ripemd160(_bytes));
+    }
+
+    /// @notice Hashes an address, then encodes to a fingerprint string.
+    /// @param _address The address to be hashed and then encoded.
+    /// @return A `string` representing the entire emoji fingerprint, with 20 glyphs.
+    /// @dev this is the equivalent of doing ripemd160(_address) and passing to
+    /// encodeToString(),and is just provided for convenience.
+    function hashEncodeAddressToString(address _address) pure external returns (string) {
+        return encodeToString(ripemd160(_address));
     }
 
 }
