@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const MomoCoder = artifacts.require("./MomoCoder.sol");
 
 const ex1_address = "0x583031D1113aD414F02576BD6afaBfb302140225";
 const ex1_encoded = "🎉🍜🍝👊🌺🍦👍🌽👩🍎🎵🐴🎩💀🐶🐪🌅🌽🌅🍎";
@@ -9,6 +8,7 @@ const ex1_chunks = [
 "0xf09f8eb5", "0xf09f90b4", "0xf09f8ea9", "0xf09f9280", "0xf09f90b6",
 "0xf09f90aa", "0xf09f8c85", "0xf09f8cbd", "0xf09f8c85", "0xf09f8d8e"];
 
+const MomoCoder = artifacts.require("./MomoCoder.sol");
 contract("MomoCoder", async (accounts) => {
 
     it("should encode an address to string with expected output", async () => {
@@ -51,4 +51,26 @@ contract("MomoCoder", async (accounts) => {
         assert.equal(prehashed, actual);
     });
 
+});
+
+
+const MomoDecoder = artifacts.require("./MomoDecoder.sol");
+contract("MomoDecoder", async (accounts) => {
+    it("decodeFromString() should properly decode a string", async () => {
+        let instance = await MomoDecoder.deployed();
+        let actual = await instance.decodeFromString.call(ex1_encoded);
+        assert.equal(web3.toChecksumAddress(actual), ex1_address);
+    })
+
+    it("decode() should properly decode some chunks", async () => {
+        let instance = await MomoDecoder.deployed();
+        let actual = await instance.decode.call(ex1_chunks);
+        assert.equal(web3.toChecksumAddress(actual), ex1_address);
+    })
+
+    // it("decodeFromString() should error when attempting to decode something not of valid length", async () => {
+    //     let instance = await MomoDecoder.deployed();
+    //     let actual = await instance.decodeFromString.call("abcdefg");
+    // });
+    // TODO: need to figure out how to get this to expect the revert error
 });
