@@ -132,6 +132,22 @@ func TestHexBytes(t *testing.T) {
 				0xb3, 0x02, 0x14, 0x02, 0x25},
 			wantErr: false,
 		},
+		{
+			name:    "invalid hex",
+			address: "z83031d1113ad414f02576bd6afabfb302140225",
+			want:    [20]byte{},
+			wantErr: true,
+		},
+		{
+			name:    "invalid extra length",
+			address: "583031d1113ad414f02576bd6afabfb3021402251234",
+			want: [20]byte{
+				0x58, 0x30, 0x31, 0xd1, 0x11,
+				0x3a, 0xd4, 0x14, 0xf0, 0x25,
+				0x76, 0xbd, 0x6a, 0xfa, 0xbf,
+				0xb3, 0x02, 0x14, 0x02, 0x25},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
