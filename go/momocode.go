@@ -3,6 +3,7 @@ package momocode
 import (
 	"crypto/sha1"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -28,6 +29,11 @@ var glyphs = [256]rune{
 	'👩', '👪', '👮', '👯', '👺', '👻', '👼', '👽', '👾', '👿', '💀', '💁', '💂', '💃', '💄',
 	'💅',
 }
+
+// errors returned by this package
+var (
+	ErrInvalidRune = errors.New("cannot decode contains invalid rune")
+)
 
 // type address [20]byte
 type Viz [20]rune
@@ -59,9 +65,8 @@ func Encode(data [20]byte) Viz {
 var decodeTable map[rune]byte
 var once sync.Once
 
-// Decode a Viz v into an address
-// TODO: error handling if got an undecodable version
-func Decode(v Viz) [20]byte {
+// Decode a glyph-based Viz v into an [20]byte address
+func Decode(v Viz) ([20]byte, error) {
 	initDecodeTable := func() {
 		res := make(map[rune]byte, len(glyphs))
 		for i, g := range glyphs {
@@ -72,10 +77,14 @@ func Decode(v Viz) [20]byte {
 	once.Do(initDecodeTable)
 
 	var res [20]byte
-	for i, c := range v {
-		res[i] = decodeTable[c]
+	for i, glyph := range v {
+		b, ok := decodeTable[glyph]
+		if !ok {
+			return res, ErrInvalidRune
+		}
+		res[i] = b
 	}
-	return res
+	return res, nil
 }
 
 // Hash calculates the SHA1 checksum of a [20]byte, to provide for avalanching

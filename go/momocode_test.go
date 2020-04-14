@@ -54,13 +54,44 @@ func TestEncode(t *testing.T) {
 }
 
 func TestDecode(t *testing.T) {
+	// sample cases should decode successfully
 	for _, tt := range samplecases {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Decode(tt.viz); got != tt.hex {
-				t.Errorf("Decode() = %x, want %x", got, tt.hex)
+			got, err := Decode(tt.viz)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != tt.hex {
+				t.Errorf("Decode() = 0x%x, want 0x%x", got, tt.hex)
 			}
 		})
 	}
+
+	// viz with invalid emoji glyphs should generate an error
+	t.Run("invalid glyphs", func(t *testing.T) {
+		// same as sample2, but with 5th emoji swapped for something invalid
+		invalid := Viz{
+			'🎡', '🎲', '🌟', '🌱', '🔕',
+			'🐱', '🐪', '🐝', '👚', '🍬',
+			'🌷', '🐊', '🍱', '🐳', '🎓',
+			'🐾', '🐁', '🐂', '👨', '🎈',
+		}
+		res, err := Decode(invalid)
+		// we should get an error
+		if err != ErrInvalidRune {
+			t.Errorf("want error: %v, got %v", ErrInvalidRune, err)
+		}
+		// result contains all valid data up til the first invalid glyph
+		expect := [20]byte{
+			0x62, 0x73, 0x06, 0x09, 0x0,
+			0x0, 0x0, 0x0, 0x0, 0x0,
+			0x0, 0x0, 0x0, 0x0, 0x0,
+			0x0, 0x0, 0x0, 0x0, 0x0,
+		}
+		if res != expect {
+			t.Errorf("want 0x%x, got 0x%x", expect, res)
+		}
+	})
 }
 
 func BenchmarkEncode(b *testing.B) {
