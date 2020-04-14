@@ -21,3 +21,23 @@ func ExampleViz_Rect() {
 	// 🌷🐊🍱🐳🎓
 	// 🐾🐁🐂👨🎈
 }
+
+func ExampleHash() {
+	addr1, _ := momocode.HexBytes("0x627306090abab3a6e1400e9345bc60c78a8bef57")
+	addr2, _ := momocode.HexBytes("0x627306090abab3a6e1400e9345bc60c78a8bef58")
+	fmt.Printf(
+		"%v\n\n%v",
+		momocode.Encode(momocode.Hash(addr1)).Rect(),
+		momocode.Encode(momocode.Hash(addr2)).Rect(),
+	)
+	// Output:
+	// 👈🐸🍶🐚🐮
+	// 🎥🎰🐯🍀🐶
+	// 🌷🐈🎊👇🏉
+	// 🍭👾🎓🍍🐵
+	//
+	// 🍬👣👺🏃🐕
+	// 🏃👦🍡👺🍻
+	// 🐥💃🍘👒🌳
+	// 🐌🐩🐆🐏👨
+}
