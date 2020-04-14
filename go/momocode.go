@@ -35,7 +35,8 @@ var (
 	ErrInvalidRune = errors.New("cannot decode contains invalid rune")
 )
 
-// type address [20]byte
+// Viz is a visual fingerprint representation of a [20]byte address, consisting
+// of 20 emoji glyph runes.
 type Viz [20]rune
 
 func (v Viz) String() string {
@@ -53,7 +54,7 @@ func (v Viz) Rect() string {
 	)
 }
 
-// Encode an address into a visual representation
+// Encode a [20]byte address into a visual representation
 func Encode(data [20]byte) Viz {
 	var res Viz
 	for i, b := range data {
@@ -61,9 +62,6 @@ func Encode(data [20]byte) Viz {
 	}
 	return res
 }
-
-var decodeTable map[rune]byte
-var once sync.Once
 
 // Decode a glyph-based Viz v into an [20]byte address
 func Decode(v Viz) ([20]byte, error) {
@@ -86,6 +84,14 @@ func Decode(v Viz) ([20]byte, error) {
 	}
 	return res, nil
 }
+
+// package global decode table, will be lazily initialized upon first use,
+// utilizing a sync.Once to ensure a single initialization even if package
+// is being utilized concurrently.
+var (
+	decodeTable map[rune]byte
+	once        sync.Once
+)
 
 // Hash calculates the SHA1 checksum of a [20]byte, to provide for avalanching
 // if you want small variances in the address to provide greater visual
