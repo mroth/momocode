@@ -43,9 +43,9 @@ func (v Viz) String() string {
 	return string(v[:])
 }
 
-// Rect renders the Viz as a string with linebreaks to put the Viz in a
+// Grid renders the Viz as a string with linebreaks to put the Viz in a
 // rectangular shape to make it more recognizable to the human eye.
-func (v Viz) Rect() string {
+func (v Viz) Grid() string {
 	return fmt.Sprintf("%s\n%s\n%s\n%s",
 		string(v[0:5]),
 		string(v[5:10]),
