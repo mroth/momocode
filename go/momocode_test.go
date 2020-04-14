@@ -1,7 +1,6 @@
 package momocode
 
 import (
-	"reflect"
 	"testing"
 )
 
@@ -141,7 +140,7 @@ func TestHexBytes(t *testing.T) {
 				t.Errorf("HexBytes() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
+			if got != tt.want {
 				t.Errorf("HexBytes() = %#v, want %#v", got, tt.want)
 			}
 		})
