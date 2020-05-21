@@ -34,7 +34,7 @@ documentation in the source files themselves.
 
 ### [Go](go/)
 
-See the godocs.
+See the [godocs](https://godoc.org/github.com/mroth/momocode/go).
 
 
 ## Visual Representation
