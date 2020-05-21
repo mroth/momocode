@@ -1,3 +1,9 @@
+// Package momocode exhibits a representative visual fingerprint for a 20-byte
+// address, such as those found on the Ethereum network, by using Emoji Unicode
+// glyphs. The representation is designed to be easily visually distinguished by
+// a human, using commonly supported and visually distinct symbols, that can be
+// easily transmitted without having to rely on image
+// generation/storage/serving.
 package momocode
 
 import (
